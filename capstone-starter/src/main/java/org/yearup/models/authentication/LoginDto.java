@@ -1,4 +1,5 @@
 package org.yearup.models.authentication;
+
 /*
     The acronym DTO is being used for "data transfer object". It means that this type of class is specifically
     created to transfer data between the client and the server. For example, LoginDto represents the data a
@@ -11,26 +12,26 @@ public class LoginDto {
    private String password;
 
    public String getUsername() {
-      return username;
+	  return username;
    }
 
    public void setUsername(String username) {
-      this.username = username;
+	  this.username = username;
    }
 
    public String getPassword() {
-      return password;
+	  return password;
    }
 
    public void setPassword(String password) {
-      this.password = password;
+	  this.password = password;
    }
 
    @Override
    public String toString() {
-      return "LoginDTO{" +
-              "username='" + username + '\'' +
-              ", password='" + password + '\'' +
-              '}';
+	  return "LoginDTO{" +
+					 "username='" + username + '\'' +
+					 ", password='" + password + '\'' +
+					 '}';
    }
 }

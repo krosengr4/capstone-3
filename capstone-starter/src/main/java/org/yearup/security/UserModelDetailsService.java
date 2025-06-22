@@ -20,31 +20,31 @@ import java.util.stream.Collectors;
 @Component("userDetailsService")
 public class UserModelDetailsService implements UserDetailsService {
 
-    private final Logger log = LoggerFactory.getLogger(UserModelDetailsService.class);
+   private final Logger log = LoggerFactory.getLogger(UserModelDetailsService.class);
 
-    private final UserDao userDao;
+   private final UserDao userDao;
 
-    public UserModelDetailsService(UserDao userDao) {
-        this.userDao = userDao;
-    }
+   public UserModelDetailsService(UserDao userDao) {
+	  this.userDao = userDao;
+   }
 
-    @Override
-    public UserDetails loadUserByUsername(final String login) {
-        log.debug("Authenticating user '{}'", login);
-        String lowercaseLogin = login.toLowerCase();
-        return createSpringSecurityUser(lowercaseLogin, userDao.getByUserName(lowercaseLogin));
-    }
+   @Override
+   public UserDetails loadUserByUsername(final String login) {
+	  log.debug("Authenticating user '{}'", login);
+	  String lowercaseLogin = login.toLowerCase();
+	  return createSpringSecurityUser(lowercaseLogin, userDao.getByUserName(lowercaseLogin));
+   }
 
-    private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
-        if (!user.isActivated()) {
-            throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
-        }
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
-                .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
-                grantedAuthorities);
-    }
+   private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
+	  if(!user.isActivated()) {
+		 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
+	  }
+	  List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+														  .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+														  .collect(Collectors.toList());
+	  return new org.springframework.security.core.userdetails.User(user.getUsername(),
+			  user.getPassword(),
+			  grantedAuthorities);
+   }
 }
 
