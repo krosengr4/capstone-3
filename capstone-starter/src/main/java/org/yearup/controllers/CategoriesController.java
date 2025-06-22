@@ -35,14 +35,28 @@ public class CategoriesController {
    @GetMapping("")
    @PreAuthorize("permitAll()")
    public List<Category> getAll() {
-	  return categoryDao.getAllCategories();
+	  try {
+		 return categoryDao.getAllCategories();
+	  } catch(Exception e) {
+		 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+	  }
    }
 
    // add the appropriate annotation for a get action
    @GetMapping("{id}")
    @PreAuthorize("permitAll()")
    public Category getById(@PathVariable int id) {
-	  return categoryDao.getById(id);
+	  try {
+		 var category = categoryDao.getById(id);
+
+		 if(category == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		 } else {
+			return category;
+		 }
+	  } catch (Exception e) {
+		 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+	  }
    }
 
    // the url to return all products in category 1 would look like this
