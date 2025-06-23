@@ -20,15 +20,21 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
    public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color) {
 	  List<Product> products = new ArrayList<>();
 
+	  //If categoryId is any, "categories where -1 = -1" (all of them) are shown.
+	  //If categoryId is specified (2 for example) "categories where category_id = 2" are shown.
 	  String sql = "SELECT * FROM products " +
 						   "WHERE (category_id = ? OR ? = -1) " +
-						   "   AND (price <= ? OR ? = -1) " +
-						   "   AND (color = ? OR ? = '') ";
+						   " AND (price >= ? OR ? = -1) " +
+						   " AND (price <= ? OR ? = -1) " +
+						   " AND (color = ? OR ? = '') ;";
 
 	  categoryId = categoryId == null ? -1 : categoryId;
 	  minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
 	  maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
 	  color = color == null ? "" : color;
+
+	  System.out.println("Min price: " + minPrice);
+	  System.out.println("Max price: " + maxPrice);
 
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(sql);
@@ -36,10 +42,14 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 		 statement.setInt(2, categoryId);
 		 statement.setBigDecimal(3, minPrice);
 		 statement.setBigDecimal(4, minPrice);
-		 statement.setString(5, color);
-		 statement.setString(6, color);
+		 statement.setBigDecimal(5, maxPrice);
+		 statement.setBigDecimal(6, maxPrice);
+		 statement.setString(7, color);
+		 statement.setString(8, color);
 
 		 ResultSet row = statement.executeQuery();
+		 System.out.println("You just searched!");
+		 System.out.println(statement);
 
 		 while(row.next()) {
 			Product product = mapRow(row);
