@@ -52,6 +52,7 @@ public class ShoppingCartController {
    // add a POST method to add a product to the cart - the url should be
    // https://localhost:8080/cart/products/15 (15 is the productId to be added
    @PostMapping("products/{productId}")
+   @ResponseStatus(value = HttpStatus.CREATED)
    public void addItemToCart(@PathVariable int productId, Principal principal) {
 	  try {
 		 //get the user that is logged in
@@ -74,5 +75,20 @@ public class ShoppingCartController {
 
    // add a DELETE method to clear all products from the current users cart
    // https://localhost:8080/cart
+   @DeleteMapping("")
+   @ResponseStatus(value = HttpStatus.NO_CONTENT)
+   public void clearCart(Principal principal) {
+	  try {
+		 //get the user that is logged in
+		 String userName = principal.getName();
+		 User user = userDao.getByUserName(userName);
+		 int userId = user.getId();
+
+		 shoppingCartDao.clearCart(userId);
+	  } catch(Exception e) {
+		 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+	  }
+
+   }
 
 }
