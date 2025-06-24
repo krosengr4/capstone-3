@@ -60,7 +60,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  return shoppingCart;
    }
 
-   public void addToCart(int userId, int productId) {
+   public ShoppingCart addToCart(int userId, int productId) {
 	  String query = "";
 
 	  int quantity = getQuantityInCart(userId, productId);
@@ -92,6 +92,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
+	  return getByUserId(userId);
    }
 
    private int getQuantityInCart(int userId, int productId) {

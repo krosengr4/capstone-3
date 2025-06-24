@@ -1,5 +1,6 @@
 package org.yearup.controllers;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -52,20 +53,19 @@ public class ShoppingCartController {
    // add a POST method to add a product to the cart - the url should be
    // https://localhost:8080/cart/products/15 (15 is the productId to be added
    @PostMapping("products/{productId}")
-   @ResponseStatus(value = HttpStatus.CREATED)
-   public void addItemToCart(@PathVariable int productId, Principal principal) {
+   @ResponseStatus(value = HttpStatus.OK)
+   public ShoppingCart addItemToCart(@PathVariable int productId, Principal principal) {
 	  try {
 		 //get the user that is logged in
 		 String userName = principal.getName();
 		 User user = userDao.getByUserName(userName);
 		 int userId = user.getId();
 
-		 shoppingCartDao.addToCart(userId, productId);
+		 return shoppingCartDao.addToCart(userId, productId);
 	  } catch(Exception e) {
 		 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
 	  }
    }
-
 
 
    // add a PUT method to update an existing product in the cart - the url should be
