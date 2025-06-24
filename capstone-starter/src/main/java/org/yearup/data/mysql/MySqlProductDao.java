@@ -20,7 +20,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
    public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color) {
 	  List<Product> products = new ArrayList<>();
 
-	  //If categoryId is any, "categories where -1 = -1" (all of them) are shown.
+	  //If categoryId is unspecified, "category_id where -1 = -1" (all categories) are shown.
 	  //If categoryId is specified (2 for example) "categories where category_id = 2" are shown.
 	  String sql = "SELECT * FROM products " +
 						   "WHERE (category_id = ? OR ? = -1) " +
