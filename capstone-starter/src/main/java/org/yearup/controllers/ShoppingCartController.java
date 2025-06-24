@@ -90,8 +90,8 @@ public class ShoppingCartController {
    // add a DELETE method to clear all products from the current users cart
    // https://localhost:8080/cart
    @DeleteMapping("")
-   @ResponseStatus(value = HttpStatus.NO_CONTENT)
-   public void clearCart(Principal principal) {
+//   @ResponseStatus(value = HttpStatus.OK)
+   public ShoppingCart clearCart(Principal principal) {
 	  try {
 		 //get the user that is logged in
 		 String userName = principal.getName();
@@ -99,6 +99,9 @@ public class ShoppingCartController {
 		 int userId = user.getId();
 
 		 shoppingCartDao.clearCart(userId);
+
+		 return shoppingCartDao.getByUserId(userId);
+
 	  } catch(Exception e) {
 		 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
 	  }

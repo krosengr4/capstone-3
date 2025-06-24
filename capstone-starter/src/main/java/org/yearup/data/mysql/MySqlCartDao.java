@@ -145,6 +145,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
    public void clearCart(int userId) {
 	  String query = "DELETE FROM shopping_cart " +
 							 "WHERE user_id = ?;";
+//	  ShoppingCart cart = getByUserId(userId);
 
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(query);
@@ -152,7 +153,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 
 		 int rows = statement.executeUpdate();
 		 if (rows > 0) {
-			System.out.println("\nCart sucessfully deleted!");
+			System.out.println("\nCart successfully deleted!");
 		 } else {
 			System.err.println("ERROR! Cart could not be cleared!!!");
 		 }
@@ -160,9 +161,6 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
+//	  return cart;
    }
-
-
-
-
 }
