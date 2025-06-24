@@ -58,6 +58,29 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  return shoppingCart;
    }
 
+   private int checkIfItemInCart(int userId, int productId) {
+	  String query = "SELECT * FROM shopping_cart " +
+							 "WHERE user_id = ? " +
+							 "AND product_id = ?;";
+	  int numberOfProduct = 0;
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, userId);
+		 statement.setInt(2, productId);
+
+		 ResultSet results = statement.executeQuery();
+
+
+		 while(results.next()) {
+			numberOfProduct++;
+		 }
+	  } catch(SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+	  return numberOfProduct;
+   }
+
    public ShoppingCartItem addToCart(int userId, int productId){
 	  String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) " +
 							 "VALUES (?, ?, 1);";

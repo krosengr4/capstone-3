@@ -33,9 +33,6 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
 	  color = color == null ? "" : color;
 
-	  System.out.println("Min price: " + minPrice);
-	  System.out.println("Max price: " + maxPrice);
-
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(sql);
 		 statement.setInt(1, categoryId);
@@ -48,7 +45,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 		 statement.setString(8, color);
 
 		 ResultSet row = statement.executeQuery();
-		 System.out.println("You just searched!");
+		 System.out.println("Search Query: ");
 		 System.out.println(statement);
 
 		 while(row.next()) {
