@@ -66,13 +66,14 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  int quantity = getQuantityInCart(userId, productId);
 
 	  if(quantity > 0) {
-		 quantity += 1;
 		 query = "UPDATE shopping_cart SET quantity = ? " +
 						 "WHERE user_id = ? AND product_id = ?;";
 	  } else {
 		 query = "INSERT INTO shopping_cart (quantity, user_id, product_id) " +
 						 "VALUES (?, ?, ?);";
 	  }
+
+	  quantity += 1;
 
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(query);
