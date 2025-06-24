@@ -100,7 +100,14 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 		 statement.setString(2, category.getDescription());
 		 statement.setInt(3, categoryId);
 
-		 statement.executeUpdate();
+		 int rows = statement.executeUpdate();
+
+		 if (rows != 0) {
+			System.out.println("Successfully Updated!!!");
+		 } else {
+			//this would be scary...
+			throw new RuntimeException("Something went wrong updating the category info...");
+		 }
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
@@ -115,7 +122,14 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 		 PreparedStatement statement = connection.prepareStatement(query);
 		 statement.setInt(1, categoryId);
 
-		 statement.executeUpdate();
+		 int rows = statement.executeUpdate();
+
+		 if (rows != 0) {
+			System.out.println("Successfully Deleted!!!");
+		 } else {
+			//this would be scary...
+			throw new RuntimeException("Something went wrong deleting the category...");
+		 }
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
