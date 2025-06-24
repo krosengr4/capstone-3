@@ -58,6 +58,33 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  return shoppingCart;
    }
 
+   public ShoppingCartItem addToCart(int userId, int productId){
+	  String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) " +
+							 "VALUES (?, ?, 1);";
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, userId);
+		 statement.setInt(2, productId);
+
+		 int rows = statement.executeUpdate();
+
+		 if (rows > 0)
+			System.out.println("Item successfully added to cart!");
+		 else
+			System.err.println("ERROR! Could not add item to the cart...");
+
+	  } catch (SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+	  Product product = productDao.getById(productId);
+	  ShoppingCartItem cartItem = new ShoppingCartItem();
+	  cartItem.setProduct(product);
+
+	  return cartItem;
+   }
+
+
 
 
 }
