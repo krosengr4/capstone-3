@@ -41,9 +41,9 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 		 ResultSet results = statement.executeQuery();
 		 while(results.next()) {
 			int productId = results.getInt("product_id");
-			Product product = productDao.getById(productId);
-
 			int quantity = results.getInt("quantity");
+
+			Product product = productDao.getById(productId);
 
 			ShoppingCartItem cartItem = new ShoppingCartItem();
 			cartItem.setProduct(product);
@@ -60,11 +60,43 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  return shoppingCart;
    }
 
-   private int checkIfItemInCart(int userId, int productId) {
+   public void addToCart(int userId, int productId) {
+	  String query = "";
+
+	  int quantity = getQuantityInCart(userId, productId);
+
+	  if(quantity > 0) {
+		 quantity += 1;
+		 query = "UPDATE shopping_cart SET quantity = ? " +
+						 "WHERE user_id = ? AND product_id = ?;";
+	  } else {
+		 query = "INSERT INTO shopping_cart (quantity, user_id, product_id) " +
+						 "VALUES (?, ?, ?);";
+	  }
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, quantity);
+		 statement.setInt(2, userId);
+		 statement.setInt(3, productId);
+
+		 int rows = statement.executeUpdate();
+
+		 if(rows > 0) {
+			System.out.println("Added item to cart!");
+		 } else {
+			System.err.println("ERROR! Could not add item to cart!!!");
+		 }
+
+	  } catch(SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+   }
+
+   private int getQuantityInCart(int userId, int productId) {
 	  String query = "SELECT * FROM shopping_cart " +
 							 "WHERE user_id = ? " +
 							 "AND product_id = ?;";
-	  int numberOfProduct = 0;
 
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(query);
@@ -72,41 +104,15 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 		 statement.setInt(2, productId);
 
 		 ResultSet results = statement.executeQuery();
-
-
-		 while(results.next()) {
-			numberOfProduct++;
+		 if(results.next()) {
+			return results.getInt("quantity");
+		 } else {
+			return 0;
 		 }
+
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
-	  return numberOfProduct;
-   }
-
-   public ShoppingCartItem addToCart(int userId, int productId){
-	  String query = "INSERT INTO shopping_cart (user_id, product_id, quantity) " +
-							 "VALUES (?, ?, 1);";
-
-	  try(Connection connection = getConnection()) {
-		 PreparedStatement statement = connection.prepareStatement(query);
-		 statement.setInt(1, userId);
-		 statement.setInt(2, productId);
-
-		 int rows = statement.executeUpdate();
-
-		 if (rows > 0)
-			System.out.println("Item successfully added to cart!");
-		 else
-			System.err.println("ERROR! Could not add item to the cart...");
-
-	  } catch (SQLException e) {
-		 throw new RuntimeException(e);
-	  }
-	  Product product = productDao.getById(productId);
-	  ShoppingCartItem cartItem = new ShoppingCartItem();
-	  cartItem.setProduct(product);
-
-	  return cartItem;
    }
 
 
