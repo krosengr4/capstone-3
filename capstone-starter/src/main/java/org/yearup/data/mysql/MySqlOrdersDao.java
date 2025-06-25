@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -18,6 +19,26 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 
    public MySqlOrdersDao(DataSource dataSource) {
 	  super(dataSource);
+   }
+
+   public List<Order> getAllOrders() {
+	  List<Order> ordersList = new ArrayList<>();
+
+	  String query = "SELECT * FROM orders;";
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+
+		 ResultSet results = statement.executeQuery();
+		 while(results.next()) {
+			Order order = mapRow(results);
+			ordersList.add(order);
+		 }
+
+	  } catch (SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+	  return ordersList;
    }
 
    public void addOrder(ShoppingCart cart, Profile profile) {
