@@ -38,20 +38,39 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 			ordersList.add(order);
 		 }
 
-	  } catch (SQLException e) {
+	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
 	  return ordersList;
    }
 
+   @Override
+   public Order getById(int orderId) {
+	  String query = "SELECT * FROM orders WHERE order_id = ?;";
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, orderId);
+
+		 ResultSet results = statement.executeQuery();
+		 if(results.next()) {
+			return mapRow(results);
+		 }
+
+	  } catch(SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+	  return null;
+   }
+
    //Insert a new order into the orders table in the database
    @Override
-   public void addOrder(Order order) {
+   public Order addOrder(Order order) {
 	  String query = "INSERT INTO orders (user_id, date, address, city, state, zip) " +
 							 "VALUES (?, ?, ?, ?, ?, ?);";
 
-	  try (Connection connection = getConnection()) {
-		 PreparedStatement statement = connection.prepareStatement(query);
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		 statement.setInt(1, order.getUserId());
 		 statement.setDate(2, (Date) order.getDate());
 		 statement.setString(3, order.getAddress());
@@ -60,14 +79,19 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 		 statement.setString(6, order.getZip());
 
 		 int rows = statement.executeUpdate();
+
 		 if(rows > 0) {
-			System.out.println("Order was successfully added!");
-		 } else {
-			System.err.println("ERROR! Could not add order!!!");
+			ResultSet key = statement.getGeneratedKeys();
+
+			if(key.next()) {
+			   int orderId = key.getInt(1);
+			   return getById(orderId);
+			}
 		 }
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
+	  return null;
    }
 
    //Insert a new order line item into the order_line_items in the database
@@ -97,7 +121,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  int userId = results.getInt("user_id");
 	  Date date = results.getDate("date");
 	  String address = results.getString("address");
-	  String city  = results.getString("city");
+	  String city = results.getString("city");
 	  String state = results.getString("state");
 	  String zip = results.getString("zip");
 	  BigDecimal shippingAmount = results.getBigDecimal("shipping_amount");
