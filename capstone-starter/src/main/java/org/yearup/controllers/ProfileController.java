@@ -41,6 +41,23 @@ public class ProfileController {
 	  }
    }
 
+   //PUT Controller to update a users profile
+   @PutMapping("")
+   public void updateProfile(@RequestBody Profile profile, Principal principal) {
+	  try {
+		 // get the user that is logged in
+		 String userName = principal.getName();
+		 User user = userDao.getByUserName(userName);
+		 int userId = user.getId();
+
+		 //Put the userId of the user logged as the userId of the profile
+		 profile.setUserId(userId);
+		 profileDao.updateProfile(profile);
+	  } catch(Exception e) {
+		 throw new RuntimeException(e);
+	  }
+   }
+
 //   //POST Controller to create a new profile
 //   //Endpoint URL = localhost:8080/profile
 //   @PostMapping("")
