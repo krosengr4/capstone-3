@@ -2,16 +2,15 @@ package org.yearup.data.mysql;
 
 import org.springframework.stereotype.Component;
 import org.yearup.data.OrderDao;
-import org.yearup.data.ShoppingCartDao;
 import org.yearup.models.Order;
 import org.yearup.models.Profile;
 import org.yearup.models.ShoppingCart;
-import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
