@@ -11,8 +11,10 @@ import java.util.List;
 public interface OrderDao {
    List<Order> getAllOrders();
 
+   Order getById(int orderId);
+
    void insertLineItems(ShoppingCartItem cartItem, int orderId);
 
-   void addOrder(Order order);
+   Order addOrder(Order order);
 
 }
