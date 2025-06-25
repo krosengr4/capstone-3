@@ -41,18 +41,20 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  return ordersList;
    }
 
-   public void addOrder(ShoppingCart cart, Profile profile) {
+   public void addOrder(Order order) {
 	  String query = "INSERT INTO orders (user_id, date, address, city, state, zip) " +
 							 "VALUES (?, ?, ?, ?, ?, ?);";
 
 	  try (Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(query);
-		 statement.setInt(1, profile.getUserId());
-		 statement.setDate(2, Date.valueOf(LocalDate.now()));
-		 statement.setString(3, profile.getAddress());
-		 statement.setString(4, profile.getCity());
-		 statement.setString(5, profile.getState());
-		 statement.setString(6, profile.getZip());
+		 statement.setInt(1, order.getUserId());
+		 statement.setDate(2, (Date) order.getDate());
+		 statement.setString(3, order.getAddress());
+		 statement.setString(4, order.getCity());
+		 statement.setString(5, order.getState());
+		 statement.setString(6, order.getZip());
+
+
 
 		 int rows = statement.executeUpdate();
 		 if(rows > 0) {

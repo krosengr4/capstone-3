@@ -10,6 +10,6 @@ import java.util.List;
 public interface OrderDao {
    List<Order> getAllOrders();
 
-   void addOrder(ShoppingCart cart, Profile profile);
+   void addOrder(Order order);
 
 }
