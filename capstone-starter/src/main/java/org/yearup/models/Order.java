@@ -10,20 +10,22 @@ public class Order {
    private Date date;
    private String address;
    private String city;
+   private String state;
    private String zip;
-   private BigDecimal shoppingAmount;
+   private BigDecimal shippingAmount;
 
    public Order() {
    }
 
-   public Order(int orderId, int userId, Date date, String address, String city, String zip, BigDecimal shoppingAmount) {
+   public Order(int orderId, int userId, Date date, String address, String city, String state, String zip, BigDecimal shippingAmount) {
 	  this.orderId = orderId;
 	  this.userId = userId;
 	  this.date = date;
 	  this.address = address;
 	  this.city = city;
+	  this.state = state;
 	  this.zip = zip;
-	  this.shoppingAmount = shoppingAmount;
+	  this.shippingAmount = shippingAmount;
    }
 
    //region getters and setters
@@ -67,6 +69,14 @@ public class Order {
 	  this.city = city;
    }
 
+   public String getState() {
+	  return state;
+   }
+
+   public void setState(String state) {
+	  this.state = state;
+   }
+
    public String getZip() {
 	  return zip;
    }
@@ -75,12 +85,12 @@ public class Order {
 	  this.zip = zip;
    }
 
-   public BigDecimal getShoppingAmount() {
-	  return shoppingAmount;
+   public BigDecimal getShippingAmount() {
+	  return shippingAmount;
    }
 
-   public void setShoppingAmount(BigDecimal shoppingAmount) {
-	  this.shoppingAmount = shoppingAmount;
+   public void setShippingAmount(BigDecimal shippingAmount) {
+	  this.shippingAmount = shippingAmount;
    }
    //endregion
 }
