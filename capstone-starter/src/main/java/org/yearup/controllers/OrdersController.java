@@ -7,10 +7,7 @@ import org.yearup.data.OrderDao;
 import org.yearup.data.ProfileDao;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.data.UserDao;
-import org.yearup.models.Order;
-import org.yearup.models.Profile;
-import org.yearup.models.ShoppingCart;
-import org.yearup.models.User;
+import org.yearup.models.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -54,16 +51,22 @@ public class OrdersController {
 		 String userName = principal.getName();
 		 User user = userDao.getByUserName(userName);
 		 int userId = user.getId();
-		 //get the date of today
-		 Date date = Date.valueOf(LocalDate.now());
 		 //get the logged in users profile
 		 Profile profile = profileDao.getByUserId(userId);
 
 		 //Create new order and set fields
-		 Order order = new Order(0, userId, date, profile.getAddress(), profile.getCity(), profile.getState(), profile.getZip(), BigDecimal.ZERO); //todo Update shipping price in a future feature
+		 Order order = new Order(0, userId, Date.valueOf(LocalDate.now()), profile.getAddress(), profile.getCity(),
+				 profile.getState(), profile.getZip(), BigDecimal.ZERO); //todo Update shipping price in a future feature
 
 		 //Use orderDao to create a new order
-		 orderDao.addOrder(order);
+		 Order addedOrder = orderDao.addOrder(order);
+
+		 //Loop through list of items in the cart and use orderDao to insert each item into order_line_items
+		 List<ShoppingCartItem> cartItems = cartDao.getItemsInCart(userId);
+		 for(ShoppingCartItem item : cartItems) {
+			orderDao.insertLineItems(item, addedOrder.getOrderId());
+		 }
+
 		 //clear the shopping cart
 		 cartDao.clearCart(userId);
 	  } catch(Exception e) {
