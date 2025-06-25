@@ -9,6 +9,7 @@ import java.sql.*;
 
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
+
    public MySqlProfileDao(DataSource dataSource) {
 	  super(dataSource);
    }
@@ -36,6 +37,21 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao {
 	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
+   }
+
+   //Method to map a row of results as a Profile and return it
+   private Profile mapRow(ResultSet results) throws SQLException {
+	  int userId = results.getInt("user_id");
+	  String firstName = results.getString("first_name");
+	  String lastName = results.getString("last_name");
+	  String phone = results.getString("phone");
+	  String email = results.getString("email");
+	  String address = results.getString("address");
+	  String city = results.getString("city");
+	  String state = results.getString("state");
+	  String zip = results.getString("zip");
+
+	  return new Profile(userId, firstName, lastName, phone, email, address, city, state, zip);
    }
 
 }

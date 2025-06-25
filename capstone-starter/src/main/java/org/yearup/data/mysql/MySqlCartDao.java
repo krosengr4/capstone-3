@@ -20,7 +20,7 @@ import java.util.Map;
 public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
    ProductDao productDao;
 
-   @Autowired
+   @Autowired //<--- You may not need this
    public MySqlCartDao(DataSource datasource, ProductDao productDao) {
 	  super(datasource);
 	  this.productDao = productDao;
