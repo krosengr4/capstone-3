@@ -94,6 +94,13 @@ class ShoppingCartService {
         button.innerText = "Clear";
         button.addEventListener("click", () => this.clearCart());
         cartHeader.appendChild(button)
+        //Add button for checkout
+//      const checkoutButton = document.createElement("button");
+//      checkoutButton.classList.add("btn")
+//      checkoutButton.classList.add("btn-danger")
+//      checkoutButton.innerText = "Checkout";
+//      checkoutButton.addEventListener("click", () => this.clearCart());
+//      cartHeader.appendChild(checkoutButton)
 
         contentDiv.appendChild(cartHeader)
         main.appendChild(contentDiv);
