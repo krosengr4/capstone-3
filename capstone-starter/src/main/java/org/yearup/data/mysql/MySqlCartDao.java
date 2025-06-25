@@ -13,7 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,9 +31,45 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
    @Override
    public ShoppingCart getByUserId(int userId) {
 
-	  Map<Integer, ShoppingCartItem> cartItemsList = new HashMap<>();
+	  List<ShoppingCartItem> cartItemsList = getItemsInCart(userId);
+	  Map<Integer, ShoppingCartItem> cartItemsMap = new HashMap<>();
 	  ShoppingCart shoppingCart = new ShoppingCart();
 
+	  for(ShoppingCartItem item : cartItemsList) {
+		 cartItemsMap.put(item.getProductId(), item);
+	  }
+
+	  shoppingCart.setItems(cartItemsMap);
+	  return shoppingCart;
+
+//	  String query = "SELECT * FROM shopping_cart WHERE user_id = ?;";
+//
+//	  try(Connection connection = getConnection()) {
+//		 PreparedStatement statement = connection.prepareStatement(query);
+//		 statement.setInt(1, userId);
+//
+//		 ResultSet results = statement.executeQuery();
+//		 while(results.next()) {
+//			int productId = results.getInt("product_id");
+//			int quantity = results.getInt("quantity");
+//
+//			Product product = productDao.getById(productId);
+//
+//			ShoppingCartItem cartItem = new ShoppingCartItem();
+//			cartItem.setProduct(product);
+//			cartItem.setQuantity(quantity);
+//
+//			cartItemsMap.put(productId, cartItem);
+//		 }
+//
+//	  } catch (SQLException e) {
+//		 throw new RuntimeException(e);
+//	  }
+   }
+
+   @Override
+   public List<ShoppingCartItem> getItemsInCart(int userId) {
+	  List<ShoppingCartItem> cartItemsList = new ArrayList<>();
 	  String query = "SELECT * FROM shopping_cart WHERE user_id = ?;";
 
 	  try(Connection connection = getConnection()) {
@@ -42,27 +80,24 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 		 while(results.next()) {
 			int productId = results.getInt("product_id");
 			int quantity = results.getInt("quantity");
-
 			Product product = productDao.getById(productId);
 
 			ShoppingCartItem cartItem = new ShoppingCartItem();
 			cartItem.setProduct(product);
 			cartItem.setQuantity(quantity);
 
-			cartItemsList.put(productId, cartItem);
+			cartItemsList.add(cartItem);
 		 }
 
-	  } catch (SQLException e) {
+	  } catch(SQLException e) {
 		 throw new RuntimeException(e);
 	  }
-
-	  shoppingCart.setItems(cartItemsList);
-	  return shoppingCart;
+	  return cartItemsList;
    }
 
+   @Override
    public ShoppingCart addToCart(int userId, int productId) {
 	  String query = "";
-
 	  int quantity = getQuantityInCart(userId, productId);
 
 	  if(quantity > 0) {
@@ -72,7 +107,6 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 		 query = "INSERT INTO shopping_cart (quantity, user_id, product_id) " +
 						 "VALUES (?, ?, ?);";
 	  }
-
 	  quantity += 1;
 
 	  try(Connection connection = getConnection()) {
@@ -82,7 +116,6 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 		 statement.setInt(3, productId);
 
 		 int rows = statement.executeUpdate();
-
 		 if(rows > 0) {
 			System.out.println("Added item to cart!");
 		 } else {
@@ -117,6 +150,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  }
    }
 
+   @Override
    public void updateCart(int userId, int productId, ShoppingCartItem cartItem) {
 	  System.out.println("Attempting to update the cart!");
 	  String query = "UPDATE shopping_cart " +
@@ -142,6 +176,7 @@ public class MySqlCartDao extends MySqlDaoBase implements ShoppingCartDao {
 	  }
    }
 
+   @Override
    public void clearCart(int userId) {
 	  String query = "DELETE FROM shopping_cart " +
 							 "WHERE user_id = ?;";
