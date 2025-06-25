@@ -5,6 +5,7 @@ import org.yearup.data.OrderDao;
 import org.yearup.models.Order;
 import org.yearup.models.Profile;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -21,6 +22,8 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  super(dataSource);
    }
 
+   //Get and return all orders in the database
+   @Override
    public List<Order> getAllOrders() {
 	  List<Order> ordersList = new ArrayList<>();
 
@@ -41,6 +44,8 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  return ordersList;
    }
 
+   //Insert a new order into the orders table in the database
+   @Override
    public void addOrder(Order order) {
 	  String query = "INSERT INTO orders (user_id, date, address, city, state, zip) " +
 							 "VALUES (?, ?, ?, ?, ?, ?);";
@@ -54,8 +59,6 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 		 statement.setString(5, order.getState());
 		 statement.setString(6, order.getZip());
 
-
-
 		 int rows = statement.executeUpdate();
 		 if(rows > 0) {
 			System.out.println("Order was successfully added!");
@@ -66,6 +69,28 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 		 throw new RuntimeException(e);
 	  }
    }
+
+   //Insert a new order line item into the order_line_items in the database
+   @Override
+   public void insertLineItems(ShoppingCartItem cartItem, int orderId) {
+	  String query = "INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount) " +
+							 "VALUES (?, ?, ?, ?, ?);";
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, orderId);
+		 statement.setInt(2, cartItem.getProductId());
+		 statement.setBigDecimal(3, cartItem.getLineTotal());
+		 statement.setInt(4, cartItem.getQuantity());
+		 statement.setBigDecimal(5, cartItem.getDiscountPercent());
+
+		 statement.executeUpdate();
+
+	  } catch(SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+   }
+
 
    private Order mapRow(ResultSet results) throws SQLException {
 	  int orderId = results.getInt("order_id");

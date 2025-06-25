@@ -59,10 +59,8 @@ public class OrdersController {
 		 //get the logged in users profile
 		 Profile profile = profileDao.getByUserId(userId);
 
-		 BigDecimal shipping = BigDecimal.valueOf(0.00);
-
 		 //Create new order and set fields
-		 Order order = new Order(0, userId, date, profile.getAddress(), profile.getCity(), profile.getState(), profile.getZip(), shipping);
+		 Order order = new Order(0, userId, date, profile.getAddress(), profile.getCity(), profile.getState(), profile.getZip(), BigDecimal.ZERO); //todo Update shipping price in a future feature
 
 		 //Use orderDao to create a new order
 		 orderDao.addOrder(order);
