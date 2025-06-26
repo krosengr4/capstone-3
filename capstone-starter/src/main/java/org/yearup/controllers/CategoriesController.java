@@ -59,6 +59,10 @@ public class CategoriesController {
 	  }
    }
 
+   //ResponseEntity<Product>
+   //return ResponseEntity.notFound().build
+	//return ResponseEntity.ok(product)
+
    // the url to return all products in category 1 would look like this
    // https://localhost:8080/categories/1/products
    @GetMapping("{categoryId}/products")

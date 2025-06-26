@@ -98,10 +98,19 @@ class ShoppingCartService {
         //Add button for checkout
         const checkoutButton = document.createElement("button");
         checkoutButton.classList.add("btn")
-        checkoutButton.classList.add("btn-danger")
+        // checkoutButton.classList.add("btn-danger")
         checkoutButton.innerText = "Checkout";
         checkoutButton.addEventListener("click", () => this.checkOut());
-        cartHeader.appendChild(checkoutButton)
+        
+        axios.get(`${config.baseUrl}/cart`)
+        .then(response => {
+
+            console.log(this)
+
+            if(this.cart.items.length !== 0) {
+                cartHeader.appendChild(checkoutButton);
+            }
+        })
 
         contentDiv.appendChild(cartHeader)
         main.appendChild(contentDiv);

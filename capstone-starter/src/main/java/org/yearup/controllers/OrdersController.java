@@ -66,10 +66,6 @@ public class OrdersController {
 			List<ShoppingCartItem> cartItems = cartDao.getItemsInCart(userId);
 
 			if(!cartItems.isEmpty()) {
-				//Get the date and time
-//				LocalDateTime now = LocalDateTime.now();
-//				String stringLocalDateTime = String.valueOf(localDateTime);
-//				Date dateTime = (Date) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stringLocalDateTime);
 
 				//Create new order and set fields
 				Order order = new Order(0, userId, LocalDateTime.now(), profile.getAddress(), profile.getCity(),
