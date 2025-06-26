@@ -10,6 +10,7 @@ import org.yearup.models.ShoppingCartItem;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  try(Connection connection = getConnection()) {
 		 PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		 statement.setInt(1, order.getUserId());
-		 statement.setDate(2, (Date) order.getDate());
+		 statement.setTimestamp(2, Timestamp.valueOf(order.getDateTime()));
 		 statement.setString(3, order.getAddress());
 		 statement.setString(4, order.getCity());
 		 statement.setString(5, order.getState());
@@ -131,14 +132,14 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
    private Order mapRow(ResultSet results) throws SQLException {
 	  int orderId = results.getInt("order_id");
 	  int userId = results.getInt("user_id");
-	  Date date = results.getDate("date");
+	   LocalDateTime dateTime = results.getTimestamp("date").toLocalDateTime();
 	  String address = results.getString("address");
 	  String city = results.getString("city");
 	  String state = results.getString("state");
 	  String zip = results.getString("zip");
 	  BigDecimal shippingAmount = results.getBigDecimal("shipping_amount");
 
-	  return new Order(orderId, userId, date, address, city, state, zip, shippingAmount);
+	  return new Order(orderId, userId, dateTime, address, city, state, zip, shippingAmount);
    }
 
 

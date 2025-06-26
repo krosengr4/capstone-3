@@ -11,7 +11,10 @@ import org.yearup.models.*;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -63,8 +66,13 @@ public class OrdersController {
 			List<ShoppingCartItem> cartItems = cartDao.getItemsInCart(userId);
 
 			if(!cartItems.isEmpty()) {
+				//Get the date and time
+//				LocalDateTime now = LocalDateTime.now();
+//				String stringLocalDateTime = String.valueOf(localDateTime);
+//				Date dateTime = (Date) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(stringLocalDateTime);
+
 				//Create new order and set fields
-				Order order = new Order(0, userId, Date.valueOf(LocalDate.now()), profile.getAddress(), profile.getCity(),
+				Order order = new Order(0, userId, LocalDateTime.now(), profile.getAddress(), profile.getCity(),
 						profile.getState(), profile.getZip(), BigDecimal.ZERO); //todo Update shipping price in a future feature
 
 				//Use orderDao to insert order into orders table
