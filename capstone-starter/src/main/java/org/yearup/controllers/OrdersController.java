@@ -38,12 +38,14 @@ public class OrdersController {
    @PreAuthorize("hasRole('ROLE_ADMIN')")
    public List<Order> getAllOrders() {
 	  try {
+		 //use orderDao to get all orders
 		 return orderDao.getAllOrders();
 	  } catch(Exception e) {
 		 throw new RuntimeException(e);
 	  }
    }
 
+   //GET controller add an order to the orders table
    @PostMapping("")
    public void addOrder(Principal principal) {
 	  try {
@@ -58,7 +60,7 @@ public class OrdersController {
 		 Order order = new Order(0, userId, Date.valueOf(LocalDate.now()), profile.getAddress(), profile.getCity(),
 				 profile.getState(), profile.getZip(), BigDecimal.ZERO); //todo Update shipping price in a future feature
 
-		 //Use orderDao to create a new order
+		 //Use orderDao to insert order into orders table
 		 Order addedOrder = orderDao.addOrder(order);
 
 		 //Loop through list of items in the cart and use orderDao to insert each item into order_line_items
@@ -73,5 +75,4 @@ public class OrdersController {
 		 throw new RuntimeException(e);
 	  }
    }
-
 }
