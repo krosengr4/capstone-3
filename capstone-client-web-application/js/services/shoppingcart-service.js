@@ -94,13 +94,14 @@ class ShoppingCartService {
         button.innerText = "Clear";
         button.addEventListener("click", () => this.clearCart());
         cartHeader.appendChild(button)
+
         //Add button for checkout
-//      const checkoutButton = document.createElement("button");
-//      checkoutButton.classList.add("btn")
-//      checkoutButton.classList.add("btn-danger")
-//      checkoutButton.innerText = "Checkout";
-//      checkoutButton.addEventListener("click", () => this.clearCart());
-//      cartHeader.appendChild(checkoutButton)
+        const checkoutButton = document.createElement("button");
+        checkoutButton.classList.add("btn")
+        checkoutButton.classList.add("btn-danger")
+        checkoutButton.innerText = "Checkout";
+        checkoutButton.addEventListener("click", () => this.checkOut());
+        cartHeader.appendChild(checkoutButton)
 
         contentDiv.appendChild(cartHeader)
         main.appendChild(contentDiv);
@@ -181,6 +182,19 @@ class ShoppingCartService {
                  templateBuilder.append("error", data, "errors")
              })
     }
+
+     checkOut()
+     {
+         const orderUrl = `${config.baseUrl}/orders`;
+         axios.post(orderUrl)
+
+        const data = {
+            error: "Success! Your order was placed!!!"
+        };
+        templateBuilder.append("error", data, "success")
+
+        this.clearCart()
+     }
 
     updateCartDisplay()
     {
