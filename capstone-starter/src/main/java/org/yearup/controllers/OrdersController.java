@@ -32,14 +32,18 @@ public class OrdersController {
 	  this.profileDao = profileDao;
    }
 
-   //GET controller to get all orders. Must be admin to access
+   //GET controller to get all items the user that is logged on has ordered
    //GET url = " https://localhost:8080/orders
    @GetMapping("")
-   @PreAuthorize("hasRole('ROLE_ADMIN')")
-   public List<Order> getAllOrders() {
+   public List<ShoppingCartItem> getItemsOrdered(Principal principal) {
 	  try {
-		 //use orderDao to get all orders
-		 return orderDao.getAllOrders();
+		 //Get the user that is logged in
+		 String userName = principal.getName();
+		 User user = userDao.getByUserName(userName);
+		 int userId = user.getId();
+
+		 //Use OrderDao to get list of items the user has ordered
+		 return orderDao.getPastOrders(userId);
 	  } catch(Exception e) {
 		 throw new RuntimeException(e);
 	  }
