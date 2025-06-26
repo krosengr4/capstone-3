@@ -1,7 +1,6 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.OrderDao;
 import org.yearup.data.ProfileDao;
@@ -43,7 +42,7 @@ public class OrdersController {
 		 int userId = user.getId();
 
 		 //Use OrderDao to get list of items the user has ordered
-		 return orderDao.getPastOrders(userId);
+		 return orderDao.getItemsOrdered(userId);
 	  } catch(Exception e) {
 		 throw new RuntimeException(e);
 	  }

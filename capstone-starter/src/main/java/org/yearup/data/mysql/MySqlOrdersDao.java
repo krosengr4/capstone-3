@@ -22,28 +22,6 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  this.productDao = productDao;
    }
 
-   //Get and return all orders in the database
-   @Override
-   public List<Order> getAllOrders() {
-	  List<Order> ordersList = new ArrayList<>();
-
-	  String query = "SELECT * FROM orders;";
-
-	  try(Connection connection = getConnection()) {
-		 PreparedStatement statement = connection.prepareStatement(query);
-
-		 ResultSet results = statement.executeQuery();
-		 while(results.next()) {
-			Order order = mapRow(results);
-			ordersList.add(order);
-		 }
-
-	  } catch(SQLException e) {
-		 throw new RuntimeException(e);
-	  }
-	  return ordersList;
-   }
-
    //Get and return an order using orderId
    @Override
    public Order getById(int orderId) {
@@ -66,7 +44,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 
    //Get and return list of items that the user logged in has ordered in the past
    @Override
-   public List<ShoppingCartItem> getPastOrders(int userId) {
+   public List<ShoppingCartItem> getItemsOrdered(int userId) {
 	  List<ShoppingCartItem> itemsList = new ArrayList<>();
 
 	  String query = "SELECT * FROM order_line_items " +
