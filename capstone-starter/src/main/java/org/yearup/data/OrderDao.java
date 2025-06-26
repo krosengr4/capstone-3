@@ -13,6 +13,8 @@ public interface OrderDao {
 
    Order getById(int orderId);
 
+   List<ShoppingCartItem> getPastOrders(int userId);
+
    void insertLineItems(ShoppingCartItem cartItem, int orderId);
 
    Order addOrder(Order order);

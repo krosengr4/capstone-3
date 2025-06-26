@@ -2,24 +2,24 @@ package org.yearup.data.mysql;
 
 import org.springframework.stereotype.Component;
 import org.yearup.data.OrderDao;
+import org.yearup.data.ProductDao;
 import org.yearup.models.Order;
-import org.yearup.models.Profile;
-import org.yearup.models.ShoppingCart;
+import org.yearup.models.Product;
 import org.yearup.models.ShoppingCartItem;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
-//   ShoppingCartDao shoppingCartDao;
+   ProductDao productDao;
 
-   public MySqlOrdersDao(DataSource dataSource) {
+   public MySqlOrdersDao(DataSource dataSource, ProductDao productDao) {
 	  super(dataSource);
+	  this.productDao = productDao;
    }
 
    //Get and return all orders in the database
@@ -44,6 +44,7 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 	  return ordersList;
    }
 
+   //Get and return an order using orderId
    @Override
    public Order getById(int orderId) {
 	  String query = "SELECT * FROM orders WHERE order_id = ?;";
@@ -61,6 +62,40 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 		 throw new RuntimeException(e);
 	  }
 	  return null;
+   }
+
+   //Get and return list of items that the user logged in has ordered in the past
+   @Override
+   public List<ShoppingCartItem> getPastOrders(int userId) {
+	  List<ShoppingCartItem> itemsList = new ArrayList<>();
+
+	  String query = "SELECT * FROM order_line_items " +
+							 "JOIN orders " +
+							 "ON order_line_items.order_id = orders.order_id " +
+							 "WHERE user_id = ?;";
+
+	  try(Connection connection = getConnection()) {
+		 PreparedStatement statement = connection.prepareStatement(query);
+		 statement.setInt(1, userId);
+
+		 ResultSet results = statement.executeQuery();
+		 while(results.next()) {
+			Product product = productDao.getById(results.getInt("product_id"));
+			int quantity = results.getInt("quantity");
+			BigDecimal discount = results.getBigDecimal("discount");
+
+			ShoppingCartItem cartItem = new ShoppingCartItem() {{
+			   setProduct(product);
+			   setQuantity(quantity);
+			   setDiscountPercent(discount);
+			}};
+			itemsList.add(cartItem);
+		 }
+
+	  } catch(SQLException e) {
+		 throw new RuntimeException(e);
+	  }
+	  return itemsList;
    }
 
    //Insert a new order into the orders table in the database
@@ -114,7 +149,6 @@ public class MySqlOrdersDao extends MySqlDaoBase implements OrderDao {
 		 throw new RuntimeException(e);
 	  }
    }
-
 
    private Order mapRow(ResultSet results) throws SQLException {
 	  int orderId = results.getInt("order_id");
