@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.yearup.models.Product;
+import org.yearup.models.Profile;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -68,7 +69,43 @@ class MySqlProductDaoTest extends BaseDaoTestClass {
 
 	  //assert
 	  assertEquals(expected.getProductId(), actual.getProductId());
+   }
 
+   @Test
+   public void getByCategoryId_shouldReturn_correctListSize() {
+	  //arrange
+	  int expected = 6;
+
+	  //act
+	  List<Product> productsList = dao.search(2, null, null, null);
+	  int actual = productsList.size();
+
+	  //assert
+	  assertEquals(expected, actual);
+   }
+
+   @Test
+   public void getByColor_shouldReturn_correctProduct() {
+	  //arrange
+	  Product expected = new Product() {{
+		 setProductId(2);
+		 setName("Laptop");
+		 setPrice(new BigDecimal("899.99"));
+		 setCategoryId(1);
+		 setDescription("A high-performance laptop for work and entertainment.");
+		 setColor("Gray");
+		 setStock(30);
+		 setFeatured(false);
+		 setImageUrl("laptop.jpg");
+	  }};
+
+	  //act
+	  String productColor = "Gray";
+	  List<Product> productsList = dao.search(null, null, null, productColor);
+	  Product actual = productsList.get(0);
+
+	  //assert
+	  assertEquals(expected.getProductId(), actual.getProductId());
    }
 
 }
