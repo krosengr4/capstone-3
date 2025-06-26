@@ -39,12 +39,6 @@ class TemplateBuilder
                      const parent = document.getElementById(target);
                      parent.appendChild(element);
 
-                     if(target == "success"){
-                        setTimeout(() => {
-                            parent.removeChild(element);
-                        }, 5000);
-                     }
-
                      if(target == "errors")
                      {
                          setTimeout(() => {

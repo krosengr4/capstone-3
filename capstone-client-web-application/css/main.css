@@ -181,6 +181,12 @@ main > .content-form .cart-item
     width: 50vw;
 }
 
+#success
+{
+    color: rgb(37, 218, 37);
+    background-color: rgb(37, 218, 37);
+}
+
 #errors
 {
     position: absolute;
