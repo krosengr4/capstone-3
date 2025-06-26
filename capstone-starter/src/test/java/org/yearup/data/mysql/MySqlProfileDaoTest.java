@@ -19,8 +19,6 @@ class MySqlProfileDaoTest extends BaseDaoTestClass{
    @Test
    void getByUserId_shouldReturn_correctProfile() {
 	  //arrange
-	  int userId = 1;
-
 	  Profile expected = new Profile() {{
 		 setUserId(1);
 		 setFirstName("Joe");
@@ -33,8 +31,8 @@ class MySqlProfileDaoTest extends BaseDaoTestClass{
 		 setZip("75051");
 	  }};
 
-
 	  //act
+	  int userId = 1;
 	  var actual = profileDao.getByUserId(userId);
 
 	  //assert
