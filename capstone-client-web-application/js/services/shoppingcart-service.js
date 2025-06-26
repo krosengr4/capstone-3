@@ -93,12 +93,11 @@ class ShoppingCartService {
         button.classList.add("btn-danger")
         button.innerText = "Clear";
         button.addEventListener("click", () => this.clearCart());
-        cartHeader.appendChild(button)
 
         //Add button for checkout
         const checkoutButton = document.createElement("button");
         checkoutButton.classList.add("btn")
-        // checkoutButton.classList.add("btn-danger")
+        checkoutButton.classList.add("btn-success")
         checkoutButton.innerText = "Checkout";
         checkoutButton.addEventListener("click", () => this.checkOut());
         
@@ -109,6 +108,7 @@ class ShoppingCartService {
 
             if(this.cart.items.length !== 0) {
                 cartHeader.appendChild(checkoutButton);
+                cartHeader.appendChild(button);
             }
         })
 
