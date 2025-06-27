@@ -6,29 +6,30 @@
 <div id="content" class="content-form">
   <h1>Checkout</h1>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="cardNumber" value='{{cardNumber}}'>
+    <input type="text" class="form-control" id="cardNumber">
     <label for="cardNumber">Enter Your Card Number:</label>
   </div>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="cvv" value='{{cvv}}'>
+    <input type="text" class="form-control" id="cvv">
     <label for="cvv">Enter The CVV on the Card:</label>
   </div>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="address" value='{{address}}'>
+    <input type="text" class="form-control" id="address">
     <label for="address">Enter Your Billing Address:</label>
   </div>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="city" value='{{city}}'>
+    <input type="text" class="form-control" id="city">
     <label for="city">Enter The Billing City:</label>
   </div>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="state" value='{{state}}'>
+    <input type="text" class="form-control" id="state">
     <label for="state">Enter The Billing State:</label>
   </div>
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="zip" value='{{zip}}'>
+    <input type="text" class="form-control" id="zip">
     <label for="zip">Enter The Billing Zip</label>
   </div>
 
-  <button class="btn btn-outline-danger" onclick="checkOut()">Checkout</button>
+  <button class="btn btn-outline-danger" onclick="cartService.checkOut()">Checkout</button>
+  <script src = "/js/services/shoppingcart-service.js"></script>
 </div>
