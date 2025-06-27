@@ -16,6 +16,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  super(dataSource);
    }
 
+   //searches product table and returns list of products based on categoryID, price, and color
    @Override
    public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color) {
 	  List<Product> products = new ArrayList<>();
@@ -28,6 +29,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 						   " AND (price <= ? OR ? = -1) " +
 						   " AND (color = ? OR ? = '') ;";
 
+	  //ternary operators (var = condition ? ifTrue : ifFalse)
 	  categoryId = categoryId == null ? -1 : categoryId;
 	  minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
 	  maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
@@ -45,8 +47,6 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 		 statement.setString(8, color);
 
 		 ResultSet row = statement.executeQuery();
-		 System.out.println("Search Query: ");
-		 System.out.println(statement);
 
 		 while(row.next()) {
 			Product product = mapRow(row);
@@ -59,6 +59,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  return products;
    }
 
+   //Returns a list of products in a category
    @Override
    public List<Product> listByCategoryId(int categoryId) {
 	  List<Product> products = new ArrayList<>();
@@ -83,7 +84,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  return products;
    }
 
-
+   //Searches product by ID, returns that product
    @Override
    public Product getById(int productId) {
 	  String sql = "SELECT * FROM products WHERE product_id = ?";
@@ -102,6 +103,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  return null;
    }
 
+   //Inserts a new product into the products table in the database
    @Override
    public Product create(Product product) {
 
@@ -139,6 +141,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  return null;
    }
 
+   //Update a product in the database
    @Override
    public void update(int productId, Product product) {
 	  String sql = "UPDATE products" +
@@ -170,6 +173,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  }
    }
 
+   //Deletes a product by ID
    @Override
    public void delete(int productId) {
 
@@ -186,6 +190,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
 	  }
    }
 
+   //Create and returns a product in a result set
    protected static Product mapRow(ResultSet row) throws SQLException {
 	  int productId = row.getInt("product_id");
 	  String name = row.getString("name");
