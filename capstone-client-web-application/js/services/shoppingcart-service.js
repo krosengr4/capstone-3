@@ -99,8 +99,9 @@ class ShoppingCartService {
         checkoutButton.classList.add("btn")
         checkoutButton.classList.add("btn-success")
         checkoutButton.innerText = "Checkout";
-        checkoutButton.addEventListener("click", () => this.checkOut());
+        checkoutButton.addEventListener("click", () => this.loadCheckOut());
         
+        //Only show clear and checkout buttons if there are items in the cart
         axios.get(`${config.baseUrl}/cart`)
         .then(response => {
 
@@ -190,6 +191,10 @@ class ShoppingCartService {
 
                  templateBuilder.append("error", data, "errors")
              })
+    }
+
+    loadCheckOut() {
+        templateBuilder.build("checkout", null, "main");
     }
 
      checkOut()
