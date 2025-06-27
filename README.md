@@ -4,9 +4,10 @@
 
 - [Description](#description)
 - [Technologies Used](#technologies-used)
-- [Usage](#usage)
-- [New Features](#new-features)
+- [Features](#features)
 - [Images](#images)
+- [Usage](#usage)
+- [Testing](#testing)
 - [Featured Code](#featured-code)
 - [License](#license)
 - [Contributing](#contributing)
@@ -37,6 +38,24 @@
     - CSS
     - JavaScript
     - Axios (for getting and returning data to the backend)
+
+---
+
+## Features
+
+1) **Shopping Cart!** 
+   - A user can now add items into their shopping cart. These items will stay in the cart until the
+      user clears the cart or checks out. That means now you can add items into your cart, log out, and the next time you
+      log in, those items will still be there waiting for you to order!
+2) **User profiles!** 
+   - A user can now create and update their profile!
+3) **Order items / checkout!!!**
+   - That's right, you are now able to order the items that you put into your cart! When you
+      check out the cart will automatically empty and your order will be placed and logged into our database. 
+
+---
+**COMING SOON**: 
+   - **View orders!** Soon you will be able to view the items that you have ordered in the past!
 
 ## Images
 
