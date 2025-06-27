@@ -3,10 +3,17 @@ function showLoginForm()
 {
     templateBuilder.build('login-form', {}, 'login');
 }
+function showRegisterForm() {
+    templateBuilder.build('register', {}, 'register');
+}
 
 function hideModalForm()
 {
     templateBuilder.clear('login');
+}
+
+function hideRegisterForm() {
+    templateBuilder.clear('register');
 }
 
 function login()

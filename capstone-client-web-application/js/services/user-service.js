@@ -100,7 +100,14 @@ class UserService {
 
         axios.post(url, register)
              .then(response => {
-                 console.log(response.data)
+                
+                const data = {
+                    message: "Welcome " + username + "!!!"
+                };
+
+                 templateBuilder.append("message", data, "success")
+
+                 this.login(username, password);
              })
             .catch(error => {
 
