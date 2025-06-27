@@ -8,7 +8,7 @@
 - [Images](#images)
 - [Usage](#usage)
 - [Testing](#testing)
-- [Featured Code](#featured-code)
+- [Key Takeaways](#key-takeaways-from-project)
 - [License](#license)
 - [Contributing](#contributing)
 - [Questions](#questions)
@@ -108,7 +108,8 @@ ___
 
 ---
 
-## Featured Code
+## Key Takeaways From Project
+[What I learned / key takeaways from this project](capstone-starter/key-takeaways/Easyshop_API-Key_Takeaways.md)
 
 ---
 
