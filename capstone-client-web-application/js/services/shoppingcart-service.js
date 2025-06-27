@@ -203,9 +203,9 @@ class ShoppingCartService {
          axios.post(orderUrl)
 
         const data = {
-            message: "Success! Your order was placed!!!"
+            message: "Success! Your order was placed!"
         };
-        templateBuilder.append("message", data, "success")
+        templateBuilder.append("message", data, "errors")
 
         this.clearCart()
      }

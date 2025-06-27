@@ -105,7 +105,7 @@ class UserService {
                     message: "Welcome " + username + "!!!"
                 };
 
-                 templateBuilder.append("message", data, "success")
+                 templateBuilder.append("message", data, "errors")
 
                  this.login(username, password);
              })
