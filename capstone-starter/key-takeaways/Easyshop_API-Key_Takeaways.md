@@ -15,7 +15,7 @@
 
 
 \- Register a new account on front end
-\- Checkout items in your cart from front end 
+- Checkout items in your cart from front end 
 
 
 
