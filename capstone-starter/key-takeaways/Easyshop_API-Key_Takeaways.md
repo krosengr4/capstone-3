@@ -103,7 +103,7 @@ the for each, and call the insertLineItems() method in the orderDao to add each 
 
 
 
-\- If a user is not logged in, and they don't have an account to log into, I added a feature where the user can register a new account!
+\- If a user is not logged in, and they don't have an account to log into, I added a feature where the user can register a new account! Whenever the user clicks Create Account, a form displays and asks them for a user name, a password, add to confirm the password. When the user enters the information and clicks "Create Account" they are automatically logged in and a welcome message displays.  
 
  
 
