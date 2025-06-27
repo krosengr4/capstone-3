@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShoppingCart {
+	//ShoppingCart consists of hashmap
    private Map<Integer, ShoppingCartItem> items = new HashMap<>();
 
    public Map<Integer, ShoppingCartItem> getItems() {
@@ -27,8 +28,11 @@ public class ShoppingCart {
 	  return items.get(productId);
    }
 
+   //Get total price of the ShoppingCart
    public BigDecimal getTotal() {
-
+	   //Uses a stream to iterate through each item,
+	   // map each item to the items total
+	   // reduce the list to the sum of all items total
 	  return items.values()
 								 .stream()
 								 .map(i -> i.getLineTotal())
